@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Localization
@@ -18,7 +18,6 @@ namespace GameFramework.Localization
         public LoadDictionaryUpdateEventArgs()
         {
             DictionaryAssetName = null;
-            LoadType = LoadType.Text;
             Progress = 0f;
             UserData = null;
         }
@@ -27,15 +26,6 @@ namespace GameFramework.Localization
         /// 获取字典资源名称。
         /// </summary>
         public string DictionaryAssetName
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取字典加载方式。
-        /// </summary>
-        public LoadType LoadType
         {
             get;
             private set;
@@ -63,15 +53,13 @@ namespace GameFramework.Localization
         /// 创建加载字典更新事件。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
         /// <param name="progress">加载字典进度。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>创建的加载字典更新事件。</returns>
-        public static LoadDictionaryUpdateEventArgs Create(string dictionaryAssetName, LoadType loadType, float progress, object userData)
+        public static LoadDictionaryUpdateEventArgs Create(string dictionaryAssetName, float progress, object userData)
         {
             LoadDictionaryUpdateEventArgs loadDictionaryUpdateEventArgs = ReferencePool.Acquire<LoadDictionaryUpdateEventArgs>();
             loadDictionaryUpdateEventArgs.DictionaryAssetName = dictionaryAssetName;
-            loadDictionaryUpdateEventArgs.LoadType = loadType;
             loadDictionaryUpdateEventArgs.Progress = progress;
             loadDictionaryUpdateEventArgs.UserData = userData;
             return loadDictionaryUpdateEventArgs;
@@ -83,7 +71,6 @@ namespace GameFramework.Localization
         public override void Clear()
         {
             DictionaryAssetName = null;
-            LoadType = LoadType.Text;
             Progress = 0f;
             UserData = null;
         }

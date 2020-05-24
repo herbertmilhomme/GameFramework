@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -14,9 +14,9 @@ namespace GameFramework
         /// <summary>
         /// 加密解密相关的实用函数。
         /// </summary>
-        internal static class Encryption
+        public static class Encryption
         {
-            private const int QuickEncryptLength = 220;
+            internal const int QuickEncryptLength = 220;
 
             /// <summary>
             /// 将 bytes 使用 code 做异或运算的快速版本。
@@ -75,11 +75,6 @@ namespace GameFramework
                 }
 
                 int bytesLength = bytes.Length;
-                if (length < 0 || length > bytesLength)
-                {
-                    length = bytesLength;
-                }
-
                 byte[] results = new byte[bytesLength];
                 Buffer.BlockCopy(bytes, 0, results, 0, bytesLength);
                 GetSelfXorBytes(results, code, length);
@@ -110,17 +105,17 @@ namespace GameFramework
                     throw new GameFrameworkException("Code length is invalid.");
                 }
 
-                int codeIndex = 0;
                 int bytesLength = bytes.Length;
                 if (length < 0 || length > bytesLength)
                 {
                     length = bytesLength;
                 }
 
+                int codeIndex = 0;
                 for (int i = 0; i < length; i++)
                 {
                     bytes[i] ^= code[codeIndex++];
-                    codeIndex = codeIndex % codeLength;
+                    codeIndex %= codeLength;
                 }
             }
         }

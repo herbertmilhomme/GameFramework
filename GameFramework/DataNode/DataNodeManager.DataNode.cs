@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace GameFramework.DataNode
         /// </summary>
         private sealed class DataNode : IDataNode, IReference
         {
-            private static readonly DataNode[] EmptyArray = new DataNode[] { };
+            private static readonly DataNode[] EmptyDataNodeArray = new DataNode[] { };
 
             private string m_Name;
             private Variable m_Data;
@@ -133,13 +133,51 @@ namespace GameFramework.DataNode
             }
 
             /// <summary>
+            /// 根据索引检查是否存在子数据结点。
+            /// </summary>
+            /// <param name="index">子数据结点的索引。</param>
+            /// <returns>是否存在子数据结点。</returns>
+            public bool HasChild(int index)
+            {
+                return index >= 0 && index < ChildCount;
+            }
+
+            /// <summary>
+            /// 根据名称检查是否存在子数据结点。
+            /// </summary>
+            /// <param name="name">子数据结点名称。</param>
+            /// <returns>是否存在子数据结点。</returns>
+            public bool HasChild(string name)
+            {
+                if (!IsValidName(name))
+                {
+                    throw new GameFrameworkException("Name is invalid.");
+                }
+
+                if (m_Childs == null)
+                {
+                    return false;
+                }
+
+                foreach (DataNode child in m_Childs)
+                {
+                    if (child.Name == name)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            /// <summary>
             /// 根据索引获取子数据结点。
             /// </summary>
             /// <param name="index">子数据结点的索引。</param>
             /// <returns>指定索引的子数据结点，如果索引越界，则返回空。</returns>
             public IDataNode GetChild(int index)
             {
-                return index >= ChildCount ? null : m_Childs[index];
+                return index >= 0 && index < ChildCount ? m_Childs[index] : null;
             }
 
             /// <summary>
@@ -203,7 +241,7 @@ namespace GameFramework.DataNode
             {
                 if (m_Childs == null)
                 {
-                    return EmptyArray;
+                    return EmptyDataNodeArray;
                 }
 
                 return m_Childs.ToArray();

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.Download;
@@ -44,6 +44,38 @@ namespace GameFramework.Resource
         /// 获取当前变体。
         /// </summary>
         string CurrentVariant
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取单机模式版本资源列表序列化器。
+        /// </summary>
+        PackageVersionListSerializer PackageVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取可更新模式版本资源列表序列化器。
+        /// </summary>
+        UpdatableVersionListSerializer UpdatableVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取本地只读区版本资源列表序列化器。
+        /// </summary>
+        ReadOnlyVersionListSerializer ReadOnlyVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取本地读写区版本资源列表序列化器。
+        /// </summary>
+        ReadWriteVersionListSerializer ReadWriteVersionListSerializer
         {
             get;
         }
@@ -98,18 +130,9 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取或设置更新文件缓存大小。
+        /// 获取或设置每下载多少字节的资源，重新生成一次版本资源列表。
         /// </summary>
-        int UpdateFileCacheLength
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// 获取或设置每下载多少字节的资源，刷新一次资源列表。
-        /// </summary>
-        int GenerateReadWriteListLength
+        int GenerateReadWriteVersionListLength
         {
             get;
             set;
@@ -381,8 +404,8 @@ namespace GameFramework.Resource
         /// 检查资源是否存在。
         /// </summary>
         /// <param name="assetName">要检查资源的名称。</param>
-        /// <returns>资源是否存在。</returns>
-        bool HasAsset(string assetName);
+        /// <returns>检查资源是否存在的结果。</returns>
+        HasAssetResult HasAsset(string assetName);
 
         /// <summary>
         /// 异步加载资源。
@@ -506,6 +529,37 @@ namespace GameFramework.Resource
         void UnloadScene(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData);
 
         /// <summary>
+        /// 获取二进制资源的实际路径。
+        /// </summary>
+        /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
+        /// <returns>二进制资源的实际路径。</returns>
+        string GetBinaryPath(string binaryAssetName);
+
+        /// <summary>
+        /// 获取二进制资源的实际路径。
+        /// </summary>
+        /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
+        /// <param name="storageInReadOnly">资源是否在只读区。</param>
+        /// <param name="relativePath">二进制资源相对于只读区或者读写区的相对路径。</param>
+        /// <returns>获取二进制资源的实际路径是否成功。</returns>
+        bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out string relativePath);
+
+        /// <summary>
+        /// 异步加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
+        void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks);
+
+        /// <summary>
+        /// 异步加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks, object userData);
+
+        /// <summary>
         /// 检查资源组是否存在。
         /// </summary>
         /// <param name="resourceGroupName">要检查资源组的名称。</param>
@@ -524,5 +578,11 @@ namespace GameFramework.Resource
         /// <param name="resourceGroupName">要获取的资源组名称。</param>
         /// <returns>要获取的资源组。</returns>
         IResourceGroup GetResourceGroup(string resourceGroupName);
+
+        /// <summary>
+        /// 获取所有加载资源任务的信息。
+        /// </summary>
+        /// <returns>所有加载资源任务的信息。</returns>
+        TaskInfo[] GetAllLoadAssetInfos();
     }
 }
